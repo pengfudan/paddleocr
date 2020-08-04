@@ -141,7 +141,7 @@ def main(args):
             text, score = rec_res[dno]
             if score >= 0.5:
                 text_str = "%s, %.3f" % (text, score)
-                print(text_str)
+                # print(text_str)
                 dt_boxes_final.append(dt_boxes[dno])
                 txts_final.append(rec_res[dno][0])  # add
         '''
@@ -177,10 +177,7 @@ def main(args):
             label_dic['flags'] = {}
             shapes.append(label_dic)
         image_label_info['shapes'] = shapes
-        if len(image_file_list) > 1:
-            img_name = image_file.split('\\')[-1]
-        else:
-            img_name = image_file.split('/')[-1]
+        img_name = os.path.basename(image_file)
         dir_name = './doc/imgs/'
         image_path = dir_name + img_name
         image_label_info['imagePath'] = img_name  # can be modified
