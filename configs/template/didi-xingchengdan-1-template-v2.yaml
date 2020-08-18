@@ -1,0 +1,123 @@
+schema_version: "1.0.0"
+template_version: "1.0.0"
+id: "3048b00e-2c94-452c-8aea-4d494adb49d6"
+image_height: 610
+image_width: 994
+partitions:
+- type: head
+  id: 乘坐日期
+  text: 上车时间
+  text_type: string
+  match_rules:
+  - text_compare_method: string.edit_distance
+    accept_threshold: 0.7
+  - head_ref: 城市
+    position_to_ref: left
+    accept_threshold: 0.7
+  shape_type: rectangle
+  points:
+  - - 171
+    - 405
+  - - 236
+    - 421
+- type: text
+  id: 乘坐日期
+  is_list: true
+  text_type: complex
+  # text_format: "($travel_dt:datetime)($travel_week:weekday)"
+  text_format: "\\d+-\\d+:\\d+.*"
+  match_rules:
+  - text_compare_method: re.match
+    accept_threshold: 01.0
+  #   value: "$travel_dt$travel_week"
+  - head_ref: 乘坐日期
+    position_to_ref: below
+    accept_threshold: 0.7
+  shape_type: rectangle
+  points:
+  - - 153
+    - 469
+  - - 254
+    - 483
+- type: head
+  id: 城市
+  text: 城市
+  text_type: string
+  match_rules:
+  - text_compare_method: string.edit_distance
+    accept_threshold: 0.6
+  - head_ref: 乘坐日期
+    position_to_ref: right
+    accept_threshold: 0.7
+  shape_type: rectangle
+  points:
+  - - 276
+    - 406
+  - - 314
+    - 421
+- type: text
+  id: 城市
+  is_list: true
+  text_type: string
+  text_format: ".+(市|县)"
+  match_rules:
+  - text_compare_method: re.match
+    accept_threshold: 1.0
+  - head_ref: 城市
+    position_to_ref: below
+    accept_threshold: 0.7
+  shape_type: rectangle
+  points:
+  - - 278
+    - 471
+  - - 313
+    - 485
+- type: head
+  id: 起点
+  text: 起点
+  text_type: string
+  match_rules:
+  - text_compare_method: string.edit_distance
+    accept_threshold: 1.0
+  - head_ref: 城市
+    position_to_ref: right
+    accept_threshold: 0.7
+  shape_type: rectangle
+  points:
+  - - 434
+    - 345
+  - - 467
+    - 360
+- type: text
+  id: 合计金额
+  text_type: complex
+  text_format: "一共($count:int)笔行程，(合|台)计($total_price:float)元"
+  match_rules:
+  - text_compare_method: string.edit_distance
+    accept_threshold: 0.7
+    value: "$total_price"
+  - head_ref: 起点
+    position_to_ref: above
+    accept_threshold: 0.7
+  shape_type: rectangle
+  points:
+  - - 355
+    - 346
+  - - 523
+    - 360
+- type: head
+  id: 滴滴出行行程单
+  text: 滴滴出行——行程单
+  text_type: string
+  shape_type: rectangle
+  match_rules:
+  - text_compare_method: string.edit_distance
+    accept_threshold: '0.7'
+  points:
+  - - 341
+    - 133
+  - - 670
+    - 177
+image_type: 
+    name: 滴滴出行行程单
+    head_ref: 滴滴出行行程单
