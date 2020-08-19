@@ -42,7 +42,7 @@ def main():
     for img_name in train_img_files:
         shutil.copy(os.path.join(image_dir, img_name), target_train)
 
-    f_train = open(os.path.join(output_dir, 'train_label.txt'), "w")
+    f_train = open(os.path.join(output_dir, 'train_label.txt'), "w", encoding='utf8')
     for filename in train_txt_files:
         with open(os.path.join(image_dir, filename), 'r', encoding='utf8') as fp:
             line = fp.readline()
@@ -55,7 +55,7 @@ def main():
     for img_name in test_img_files:
         shutil.copy(os.path.join(image_dir, img_name), target_test)
 
-    f_test = open(os.path.join(output_dir, 'test_label.txt'), "w")
+    f_test = open(os.path.join(output_dir, 'test_label.txt'), "w", encoding='utf8')
     for filename in test_txt_files:
         with open(os.path.join(image_dir, filename), 'r', encoding='utf8') as fp:
             line = fp.readline()
