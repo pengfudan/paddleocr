@@ -15,6 +15,8 @@
 import logging
 import os
 
+import cv2
+
 
 def initial_logger():
     FORMAT = '%(asctime)s-%(levelname)s: %(message)s'
@@ -71,6 +73,20 @@ def get_image_file_list(img_file):
     if len(imgs_lists) == 0:
         raise Exception("not found any img file in {}".format(img_file))
     return imgs_lists
+
+
+def check_and_read_gif(img_path):
+    if os.path.basename(img_path)[-3:] in ['gif', 'GIF']:
+        gif = cv2.VideoCapture(img_path)
+        ret, frame = gif.read()
+        if not ret:
+            logging.info("Cannot read {}. This gif image maybe corrupted.")
+            return None, False
+        if len(frame.shape) == 2 or frame.shape[-1] == 1:
+            frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)
+        imgvalue = frame[:, :, ::-1]
+        return imgvalue, True
+    return None, False
 
 
 from paddle import fluid
